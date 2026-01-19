@@ -3,7 +3,7 @@ import { Todo } from '../models/todo.model.js';
 // Get all todos
 export const getAllTodos = async (req, res) => {
     try {
-        const todos = await Todo.find();
+        const todos = await Todo.find({ user: req.userId });
         res.json(todos);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -13,7 +13,8 @@ export const getAllTodos = async (req, res) => {
 // Create a new todo
 export const createTodo = async(req,res)=>{
     const todo = new Todo({
-        text: req.body.text
+        text: req.body.text,
+        user: req.userId
     });
     try {
         const newTodo = await todo.save();
